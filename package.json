@@ -1,0 +1,36 @@
+{
+  "name": "stable-horde-api",
+  "version": "1.0.0",
+  "description": "OpenAPI client for stable-horde-api",
+  "author": "JamDon2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JamDon2/stable-horde-api.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "axios",
+    "typescript",
+    "openapi-client",
+    "openapi-generator",
+    "stable-horde-api"
+  ],
+  "license": "Unlicense",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --outDir dist/",
+    "update": "openapi-generator-cli generate -i https://stablehorde.net/api/swagger.json -g typescript-axios -o ."
+  },
+  "dependencies": {
+    "axios": "^0.26.1"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.5.2",
+    "@types/node": "^12.11.5",
+    "prettier": "^2.7.1",
+    "typescript": "^4.0"
+  }
+}
