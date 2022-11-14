@@ -1456,6 +1456,12 @@ export interface PopInput {
      * @memberof PopInput
      */
     'bridge_version'?: number;
+    /**
+     * How many threads this worker is running. This is used to accurately the current power available in the horde
+     * @type {number}
+     * @memberof PopInput
+     */
+    'threads'?: number;
 }
 /**
  * 
@@ -1499,6 +1505,12 @@ export interface PopInputStable {
      * @memberof PopInputStable
      */
     'bridge_version'?: number;
+    /**
+     * How many threads this worker is running. This is used to accurately the current power available in the horde
+     * @type {number}
+     * @memberof PopInputStable
+     */
+    'threads'?: number;
     /**
      * The maximum amount of pixels this worker can generate
      * @type {number}
@@ -2405,6 +2417,12 @@ export interface WorkerDetails {
      */
     'id'?: string;
     /**
+     * True if the worker has checked-in the past 5 minutes.
+     * @type {boolean}
+     * @memberof WorkerDetails
+     */
+    'online'?: boolean;
+    /**
      * How many images this worker has generated.
      * @type {number}
      * @memberof WorkerDetails
@@ -2428,6 +2446,12 @@ export interface WorkerDetails {
      * @memberof WorkerDetails
      */
     'performance'?: string;
+    /**
+     * How many threads this worker is running.
+     * @type {number}
+     * @memberof WorkerDetails
+     */
+    'threads'?: number;
     /**
      * The amount of seconds this worker has been online for this Horde.
      * @type {number}
@@ -2532,6 +2556,12 @@ export interface WorkerDetailsAllOf {
      */
     'performance'?: string;
     /**
+     * How many threads this worker is running.
+     * @type {number}
+     * @memberof WorkerDetailsAllOf
+     */
+    'threads'?: number;
+    /**
      * The amount of seconds this worker has been online for this Horde.
      * @type {number}
      * @memberof WorkerDetailsAllOf
@@ -2622,6 +2652,12 @@ export interface WorkerDetailsLite {
      * @memberof WorkerDetailsLite
      */
     'id'?: string;
+    /**
+     * True if the worker has checked-in the past 5 minutes.
+     * @type {boolean}
+     * @memberof WorkerDetailsLite
+     */
+    'online'?: boolean;
 }
 /**
  * 
@@ -2641,6 +2677,12 @@ export interface WorkerDetailsStable {
      * @memberof WorkerDetailsStable
      */
     'id'?: string;
+    /**
+     * True if the worker has checked-in the past 5 minutes.
+     * @type {boolean}
+     * @memberof WorkerDetailsStable
+     */
+    'online'?: boolean;
     /**
      * How many images this worker has generated.
      * @type {number}
@@ -2665,6 +2707,12 @@ export interface WorkerDetailsStable {
      * @memberof WorkerDetailsStable
      */
     'performance'?: string;
+    /**
+     * How many threads this worker is running.
+     * @type {number}
+     * @memberof WorkerDetailsStable
+     */
+    'threads'?: number;
     /**
      * The amount of seconds this worker has been online for this Horde.
      * @type {number}
