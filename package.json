@@ -1,6 +1,6 @@
 {
   "name": "stable-horde-api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "OpenAPI client for stable-horde-api",
   "author": "JamDon2",
   "repository": {
