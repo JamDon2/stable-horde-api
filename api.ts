@@ -619,35 +619,17 @@ export interface ModelGenerationInputStable {
      */
     'seed_variation'?: number;
     /**
-     * Set to true to process the generated image with GFPGAN (face correction)
-     * @type {boolean}
+     * 
+     * @type {Set<string>}
      * @memberof ModelGenerationInputStable
      */
-    'use_gfpgan'?: boolean;
+    'post_processing'?: Set<ModelGenerationInputStablePostProcessingEnum>;
     /**
      * Set to True to enable karras noise scheduling tweaks
      * @type {boolean}
      * @memberof ModelGenerationInputStable
      */
     'karras'?: boolean;
-    /**
-     * Set to true to process the generated image with RealESRGAN
-     * @type {boolean}
-     * @memberof ModelGenerationInputStable
-     */
-    'use_real_esrgan'?: boolean;
-    /**
-     * Set to true to process the generated image with LDSR
-     * @type {boolean}
-     * @memberof ModelGenerationInputStable
-     */
-    'use_ldsr'?: boolean;
-    /**
-     * Set to true to upscale the image
-     * @type {boolean}
-     * @memberof ModelGenerationInputStable
-     */
-    'use_upscaling'?: boolean;
     /**
      * 
      * @type {number}
@@ -663,19 +645,26 @@ export interface ModelGenerationInputStable {
 }
 
 export const ModelGenerationInputStableSamplerNameEnum = {
-    Lms: 'k_lms',
-    Heun: 'k_heun',
-    Euler: 'k_euler',
-    EulerA: 'k_euler_a',
-    Dpm2: 'k_dpm_2',
-    Dpm2A: 'k_dpm_2_a',
-    DpmFast: 'k_dpm_fast',
-    DpmAdaptive: 'k_dpm_adaptive',
-    Dpmpp2sA: 'k_dpmpp_2s_a',
-    Dpmpp2m: 'k_dpmpp_2m'
+    KLms: 'k_lms',
+    KHeun: 'k_heun',
+    KEuler: 'k_euler',
+    KEulerA: 'k_euler_a',
+    KDpm2: 'k_dpm_2',
+    KDpm2A: 'k_dpm_2_a',
+    KDpmFast: 'k_dpm_fast',
+    KDpmAdaptive: 'k_dpm_adaptive',
+    KDpmpp2sA: 'k_dpmpp_2s_a',
+    KDpmpp2m: 'k_dpmpp_2m',
+    Dpmsolver: 'dpmsolver'
 } as const;
 
 export type ModelGenerationInputStableSamplerNameEnum = typeof ModelGenerationInputStableSamplerNameEnum[keyof typeof ModelGenerationInputStableSamplerNameEnum];
+export const ModelGenerationInputStablePostProcessingEnum = {
+    Gfpgan: 'GFPGAN',
+    RealEsrganX4plus: 'RealESRGAN_x4plus'
+} as const;
+
+export type ModelGenerationInputStablePostProcessingEnum = typeof ModelGenerationInputStablePostProcessingEnum[keyof typeof ModelGenerationInputStablePostProcessingEnum];
 
 /**
  * 
@@ -751,51 +740,40 @@ export interface ModelPayloadRootStable {
      */
     'seed_variation'?: number;
     /**
-     * Set to true to process the generated image with GFPGAN (face correction)
-     * @type {boolean}
+     * 
+     * @type {Set<string>}
      * @memberof ModelPayloadRootStable
      */
-    'use_gfpgan'?: boolean;
+    'post_processing'?: Set<ModelPayloadRootStablePostProcessingEnum>;
     /**
      * Set to True to enable karras noise scheduling tweaks
      * @type {boolean}
      * @memberof ModelPayloadRootStable
      */
     'karras'?: boolean;
-    /**
-     * Set to true to process the generated image with RealESRGAN
-     * @type {boolean}
-     * @memberof ModelPayloadRootStable
-     */
-    'use_real_esrgan'?: boolean;
-    /**
-     * Set to true to process the generated image with LDSR
-     * @type {boolean}
-     * @memberof ModelPayloadRootStable
-     */
-    'use_ldsr'?: boolean;
-    /**
-     * Set to true to upscale the image
-     * @type {boolean}
-     * @memberof ModelPayloadRootStable
-     */
-    'use_upscaling'?: boolean;
 }
 
 export const ModelPayloadRootStableSamplerNameEnum = {
-    Lms: 'k_lms',
-    Heun: 'k_heun',
-    Euler: 'k_euler',
-    EulerA: 'k_euler_a',
-    Dpm2: 'k_dpm_2',
-    Dpm2A: 'k_dpm_2_a',
-    DpmFast: 'k_dpm_fast',
-    DpmAdaptive: 'k_dpm_adaptive',
-    Dpmpp2sA: 'k_dpmpp_2s_a',
-    Dpmpp2m: 'k_dpmpp_2m'
+    KLms: 'k_lms',
+    KHeun: 'k_heun',
+    KEuler: 'k_euler',
+    KEulerA: 'k_euler_a',
+    KDpm2: 'k_dpm_2',
+    KDpm2A: 'k_dpm_2_a',
+    KDpmFast: 'k_dpm_fast',
+    KDpmAdaptive: 'k_dpm_adaptive',
+    KDpmpp2sA: 'k_dpmpp_2s_a',
+    KDpmpp2m: 'k_dpmpp_2m',
+    Dpmsolver: 'dpmsolver'
 } as const;
 
 export type ModelPayloadRootStableSamplerNameEnum = typeof ModelPayloadRootStableSamplerNameEnum[keyof typeof ModelPayloadRootStableSamplerNameEnum];
+export const ModelPayloadRootStablePostProcessingEnum = {
+    Gfpgan: 'GFPGAN',
+    RealEsrganX4plus: 'RealESRGAN_x4plus'
+} as const;
+
+export type ModelPayloadRootStablePostProcessingEnum = typeof ModelPayloadRootStablePostProcessingEnum[keyof typeof ModelPayloadRootStablePostProcessingEnum];
 
 /**
  * 
@@ -852,35 +830,17 @@ export interface ModelPayloadStable {
      */
     'seed_variation'?: number;
     /**
-     * Set to true to process the generated image with GFPGAN (face correction)
-     * @type {boolean}
+     * 
+     * @type {Set<string>}
      * @memberof ModelPayloadStable
      */
-    'use_gfpgan'?: boolean;
+    'post_processing'?: Set<ModelPayloadStablePostProcessingEnum>;
     /**
      * Set to True to enable karras noise scheduling tweaks
      * @type {boolean}
      * @memberof ModelPayloadStable
      */
     'karras'?: boolean;
-    /**
-     * Set to true to process the generated image with RealESRGAN
-     * @type {boolean}
-     * @memberof ModelPayloadStable
-     */
-    'use_real_esrgan'?: boolean;
-    /**
-     * Set to true to process the generated image with LDSR
-     * @type {boolean}
-     * @memberof ModelPayloadStable
-     */
-    'use_ldsr'?: boolean;
-    /**
-     * Set to true to upscale the image
-     * @type {boolean}
-     * @memberof ModelPayloadStable
-     */
-    'use_upscaling'?: boolean;
     /**
      * The prompt which will be sent to Stable Diffusion to generate an image
      * @type {string}
@@ -908,19 +868,26 @@ export interface ModelPayloadStable {
 }
 
 export const ModelPayloadStableSamplerNameEnum = {
-    Lms: 'k_lms',
-    Heun: 'k_heun',
-    Euler: 'k_euler',
-    EulerA: 'k_euler_a',
-    Dpm2: 'k_dpm_2',
-    Dpm2A: 'k_dpm_2_a',
-    DpmFast: 'k_dpm_fast',
-    DpmAdaptive: 'k_dpm_adaptive',
-    Dpmpp2sA: 'k_dpmpp_2s_a',
-    Dpmpp2m: 'k_dpmpp_2m'
+    KLms: 'k_lms',
+    KHeun: 'k_heun',
+    KEuler: 'k_euler',
+    KEulerA: 'k_euler_a',
+    KDpm2: 'k_dpm_2',
+    KDpm2A: 'k_dpm_2_a',
+    KDpmFast: 'k_dpm_fast',
+    KDpmAdaptive: 'k_dpm_adaptive',
+    KDpmpp2sA: 'k_dpmpp_2s_a',
+    KDpmpp2m: 'k_dpmpp_2m',
+    Dpmsolver: 'dpmsolver'
 } as const;
 
 export type ModelPayloadStableSamplerNameEnum = typeof ModelPayloadStableSamplerNameEnum[keyof typeof ModelPayloadStableSamplerNameEnum];
+export const ModelPayloadStablePostProcessingEnum = {
+    Gfpgan: 'GFPGAN',
+    RealEsrganX4plus: 'RealESRGAN_x4plus'
+} as const;
+
+export type ModelPayloadStablePostProcessingEnum = typeof ModelPayloadStablePostProcessingEnum[keyof typeof ModelPayloadStablePostProcessingEnum];
 
 /**
  * 
@@ -1187,11 +1154,17 @@ export interface ModifyWorker {
  */
 export interface ModifyWorkerInput {
     /**
-     * (Mods only) Set to true to put this worker into maintenance.
+     * Set to true to put this worker into maintenance.
      * @type {boolean}
      * @memberof ModifyWorkerInput
      */
     'maintenance'?: boolean;
+    /**
+     * if maintenance is True, you can optionally provide a message to be used instead of the default maintenance message, so that the owner is informed.
+     * @type {string}
+     * @memberof ModifyWorkerInput
+     */
+    'maintenance_msg'?: string;
     /**
      * (Mods only) Set to true to pause this worker.
      * @type {boolean}
@@ -1623,6 +1596,12 @@ export interface PutHordeModesRequest {
      * @memberof PutHordeModesRequest
      */
     'maintenance'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof PutHordeModesRequest
+     */
+    'shutdown'?: number;
     /**
      * 
      * @type {boolean}
