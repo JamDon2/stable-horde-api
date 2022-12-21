@@ -308,6 +308,12 @@ export interface GenerationInput {
      * @memberof GenerationInput
      */
     'source_mask'?: string;
+    /**
+     * If True, the image will be sent via cloudflare r2 download link
+     * @type {boolean}
+     * @memberof GenerationInput
+     */
+    'r2'?: boolean;
 }
 
 export const GenerationInputSourceProcessingEnum = {
@@ -366,6 +372,12 @@ export interface GenerationPayload {
      * @memberof GenerationPayload
      */
     'source_mask'?: string;
+    /**
+     * The r2 upload link to use to upload this image
+     * @type {string}
+     * @memberof GenerationPayload
+     */
+    'r2_upload'?: string;
 }
 
 export const GenerationPayloadSourceProcessingEnum = {
@@ -3141,6 +3153,36 @@ export const V2ApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
+         * @summary If this loads, this node is available
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHeartbeat: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v2/status/heartbeat`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Details about the current performance of this Horde
          * @param {string} [xFields] An optional fields mask
          * @param {*} [options] Override http request option.
@@ -3716,19 +3758,12 @@ export const V2ApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * This connection will only terminate when the images have been generated, or an error occured. If you connection is interrupted, you will not have the request UUID, so you cannot retrieve the images asynchronously.
-         * @summary Initiate a Synchronous request to generate images
-         * @param {string} apikey The API Key corresponding to a registered user
-         * @param {GenerationInput} payload 
-         * @param {string} [xFields] An optional fields mask
+         * Initiate a Synchronous request to generate images This connection will only terminate when the images have been generated, or an error occured. If you connection is interrupted, you will not have the request UUID, so you cannot retrieve the images asynchronously.
+         * @summary THIS ENDPOINT HAS BEEN DECOMMISSIONED
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postSyncGenerate: async (apikey: string, payload: GenerationInput, xFields?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'apikey' is not null or undefined
-            assertParamExists('postSyncGenerate', 'apikey', apikey)
-            // verify required parameter 'payload' is not null or undefined
-            assertParamExists('postSyncGenerate', 'payload', payload)
+        postSyncGenerate: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v2/generate/sync`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3741,22 +3776,11 @@ export const V2ApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (apikey != null) {
-                localVarHeaderParameter['apikey'] = String(apikey);
-            }
-
-            if (xFields != null) {
-                localVarHeaderParameter['X-Fields'] = String(xFields);
-            }
-
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(payload, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -4110,6 +4134,16 @@ export const V2ApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary If this loads, this node is available
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getHeartbeat(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getHeartbeat(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Details about the current performance of this Horde
          * @param {string} [xFields] An optional fields mask
          * @param {*} [options] Override http request option.
@@ -4279,16 +4313,13 @@ export const V2ApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This connection will only terminate when the images have been generated, or an error occured. If you connection is interrupted, you will not have the request UUID, so you cannot retrieve the images asynchronously.
-         * @summary Initiate a Synchronous request to generate images
-         * @param {string} apikey The API Key corresponding to a registered user
-         * @param {GenerationInput} payload 
-         * @param {string} [xFields] An optional fields mask
+         * Initiate a Synchronous request to generate images This connection will only terminate when the images have been generated, or an error occured. If you connection is interrupted, you will not have the request UUID, so you cannot retrieve the images asynchronously.
+         * @summary THIS ENDPOINT HAS BEEN DECOMMISSIONED
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postSyncGenerate(apikey: string, payload: GenerationInput, xFields?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RequestStatusStable>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.postSyncGenerate(apikey, payload, xFields, options);
+        async postSyncGenerate(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postSyncGenerate(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4450,6 +4481,15 @@ export const V2ApiFactory = function (configuration?: Configuration, basePath?: 
         },
         /**
          * 
+         * @summary If this loads, this node is available
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHeartbeat(options?: any): AxiosPromise<void> {
+            return localVarFp.getHeartbeat(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Details about the current performance of this Horde
          * @param {string} [xFields] An optional fields mask
          * @param {*} [options] Override http request option.
@@ -4605,16 +4645,13 @@ export const V2ApiFactory = function (configuration?: Configuration, basePath?: 
             return localVarFp.postJobSubmit(apikey, payload, xFields, options).then((request) => request(axios, basePath));
         },
         /**
-         * This connection will only terminate when the images have been generated, or an error occured. If you connection is interrupted, you will not have the request UUID, so you cannot retrieve the images asynchronously.
-         * @summary Initiate a Synchronous request to generate images
-         * @param {string} apikey The API Key corresponding to a registered user
-         * @param {GenerationInput} payload 
-         * @param {string} [xFields] An optional fields mask
+         * Initiate a Synchronous request to generate images This connection will only terminate when the images have been generated, or an error occured. If you connection is interrupted, you will not have the request UUID, so you cannot retrieve the images asynchronously.
+         * @summary THIS ENDPOINT HAS BEEN DECOMMISSIONED
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postSyncGenerate(apikey: string, payload: GenerationInput, xFields?: string, options?: any): AxiosPromise<RequestStatusStable> {
-            return localVarFp.postSyncGenerate(apikey, payload, xFields, options).then((request) => request(axios, basePath));
+        postSyncGenerate(options?: any): AxiosPromise<void> {
+            return localVarFp.postSyncGenerate(options).then((request) => request(axios, basePath));
         },
         /**
          * Only trusted users can create new teams.
@@ -4780,6 +4817,17 @@ export class V2Api extends BaseAPI {
      */
     public getFindUser(apikey?: string, xFields?: string, options?: AxiosRequestConfig) {
         return V2ApiFp(this.configuration).getFindUser(apikey, xFields, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary If this loads, this node is available
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof V2Api
+     */
+    public getHeartbeat(options?: AxiosRequestConfig) {
+        return V2ApiFp(this.configuration).getHeartbeat(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4967,17 +5015,14 @@ export class V2Api extends BaseAPI {
     }
 
     /**
-     * This connection will only terminate when the images have been generated, or an error occured. If you connection is interrupted, you will not have the request UUID, so you cannot retrieve the images asynchronously.
-     * @summary Initiate a Synchronous request to generate images
-     * @param {string} apikey The API Key corresponding to a registered user
-     * @param {GenerationInput} payload 
-     * @param {string} [xFields] An optional fields mask
+     * Initiate a Synchronous request to generate images This connection will only terminate when the images have been generated, or an error occured. If you connection is interrupted, you will not have the request UUID, so you cannot retrieve the images asynchronously.
+     * @summary THIS ENDPOINT HAS BEEN DECOMMISSIONED
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof V2Api
      */
-    public postSyncGenerate(apikey: string, payload: GenerationInput, xFields?: string, options?: AxiosRequestConfig) {
-        return V2ApiFp(this.configuration).postSyncGenerate(apikey, payload, xFields, options).then((request) => request(this.axios, this.basePath));
+    public postSyncGenerate(options?: AxiosRequestConfig) {
+        return V2ApiFp(this.configuration).postSyncGenerate(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
