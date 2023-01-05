@@ -495,11 +495,17 @@ export interface HordePerformance {
      */
     'queued_requests'?: number;
     /**
-     * How many workers are actively processing image generations in this Horde in the past 5 minutes
+     * How many workers are actively processing prompt generations in this Horde in the past 5 minutes
      * @type {number}
      * @memberof HordePerformance
      */
     'worker_count'?: number;
+    /**
+     * How many worker threads are actively processing prompt generations in this Horde in the past 5 minutes
+     * @type {number}
+     * @memberof HordePerformance
+     */
+    'thread_count'?: number;
 }
 /**
  * 
@@ -514,11 +520,17 @@ export interface HordePerformanceStable {
      */
     'queued_requests'?: number;
     /**
-     * How many workers are actively processing image generations in this Horde in the past 5 minutes
+     * How many workers are actively processing prompt generations in this Horde in the past 5 minutes
      * @type {number}
      * @memberof HordePerformanceStable
      */
     'worker_count'?: number;
+    /**
+     * How many worker threads are actively processing prompt generations in this Horde in the past 5 minutes
+     * @type {number}
+     * @memberof HordePerformanceStable
+     */
+    'thread_count'?: number;
     /**
      * The amount of megapixelsteps in waiting and processing requests currently in this Horde
      * @type {number}
@@ -531,6 +543,24 @@ export interface HordePerformanceStable {
      * @memberof HordePerformanceStable
      */
     'past_minute_megapixelsteps'?: number;
+    /**
+     * The amount of image interrogations waiting and processing currently in this Horde
+     * @type {number}
+     * @memberof HordePerformanceStable
+     */
+    'queued_forms'?: number;
+    /**
+     * How many workers are actively processing image interrogations in this Horde in the past 5 minutes
+     * @type {number}
+     * @memberof HordePerformanceStable
+     */
+    'interrogator_count'?: number;
+    /**
+     * How many worker threads are actively processing image interrogation in this Horde in the past 5 minutes
+     * @type {number}
+     * @memberof HordePerformanceStable
+     */
+    'interrogator_thread_count'?: number;
 }
 /**
  * 
@@ -539,12 +569,6 @@ export interface HordePerformanceStable {
  */
 export interface HordePerformanceStableAllOf {
     /**
-     * The amount of waiting and processing requests currently in this Horde
-     * @type {number}
-     * @memberof HordePerformanceStableAllOf
-     */
-    'queued_requests'?: number;
-    /**
      * The amount of megapixelsteps in waiting and processing requests currently in this Horde
      * @type {number}
      * @memberof HordePerformanceStableAllOf
@@ -557,11 +581,191 @@ export interface HordePerformanceStableAllOf {
      */
     'past_minute_megapixelsteps'?: number;
     /**
-     * How many workers are actively processing image generations in this Horde in the past 5 minutes
+     * The amount of image interrogations waiting and processing currently in this Horde
      * @type {number}
      * @memberof HordePerformanceStableAllOf
      */
-    'worker_count'?: number;
+    'queued_forms'?: number;
+    /**
+     * How many workers are actively processing image interrogations in this Horde in the past 5 minutes
+     * @type {number}
+     * @memberof HordePerformanceStableAllOf
+     */
+    'interrogator_count'?: number;
+    /**
+     * How many worker threads are actively processing image interrogation in this Horde in the past 5 minutes
+     * @type {number}
+     * @memberof HordePerformanceStableAllOf
+     */
+    'interrogator_thread_count'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface InterrogationFormResult
+ */
+export interface InterrogationFormResult {
+    /**
+     * 
+     * @type {{ [key: string]: object; }}
+     * @memberof InterrogationFormResult
+     */
+    '*'?: { [key: string]: object; };
+}
+/**
+ * 
+ * @export
+ * @interface InterrogationFormStatus
+ */
+export interface InterrogationFormStatus {
+    /**
+     * The name of this interrogation form
+     * @type {string}
+     * @memberof InterrogationFormStatus
+     */
+    'form'?: string;
+    /**
+     * The overall status of this interrogation
+     * @type {string}
+     * @memberof InterrogationFormStatus
+     */
+    'state'?: string;
+    /**
+     * 
+     * @type {InterrogationFormResult}
+     * @memberof InterrogationFormStatus
+     */
+    'result'?: InterrogationFormResult;
+}
+/**
+ * 
+ * @export
+ * @interface InterrogationPopFormPayload
+ */
+export interface InterrogationPopFormPayload {
+    /**
+     * The UUID of the interrogation form. Use this to post the results in the future
+     * @type {string}
+     * @memberof InterrogationPopFormPayload
+     */
+    'id'?: string;
+    /**
+     * The name of this interrogation form
+     * @type {string}
+     * @memberof InterrogationPopFormPayload
+     */
+    'form'?: InterrogationPopFormPayloadFormEnum;
+    /**
+     * 
+     * @type {ModelInterrogationFormPayloadStable}
+     * @memberof InterrogationPopFormPayload
+     */
+    'payload'?: ModelInterrogationFormPayloadStable;
+    /**
+     * The URL From which the source image can be downloaded
+     * @type {string}
+     * @memberof InterrogationPopFormPayload
+     */
+    'source_image'?: string;
+}
+
+export const InterrogationPopFormPayloadFormEnum = {
+    Caption: 'caption',
+    Interrogation: 'interrogation',
+    Nsfw: 'nsfw'
+} as const;
+
+export type InterrogationPopFormPayloadFormEnum = typeof InterrogationPopFormPayloadFormEnum[keyof typeof InterrogationPopFormPayloadFormEnum];
+
+/**
+ * 
+ * @export
+ * @interface InterrogationPopInput
+ */
+export interface InterrogationPopInput {
+    /**
+     * The Name of the Worker
+     * @type {string}
+     * @memberof InterrogationPopInput
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof InterrogationPopInput
+     */
+    'priority_usernames'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof InterrogationPopInput
+     */
+    'forms'?: Array<InterrogationPopInputFormsEnum>;
+    /**
+     * The amount of forms to pop at the same time
+     * @type {number}
+     * @memberof InterrogationPopInput
+     */
+    'amount'?: number;
+    /**
+     * The version of the bridge used by this worker
+     * @type {number}
+     * @memberof InterrogationPopInput
+     */
+    'bridge_version'?: number;
+    /**
+     * How many threads this worker is running. This is used to accurately the current power available in the horde
+     * @type {number}
+     * @memberof InterrogationPopInput
+     */
+    'threads'?: number;
+}
+
+export const InterrogationPopInputFormsEnum = {
+    Caption: 'caption',
+    Interrogation: 'interrogation',
+    Nsfw: 'nsfw'
+} as const;
+
+export type InterrogationPopInputFormsEnum = typeof InterrogationPopInputFormsEnum[keyof typeof InterrogationPopInputFormsEnum];
+
+/**
+ * 
+ * @export
+ * @interface InterrogationPopPayload
+ */
+export interface InterrogationPopPayload {
+    /**
+     * 
+     * @type {Array<InterrogationPopFormPayload>}
+     * @memberof InterrogationPopPayload
+     */
+    'forms'?: Array<InterrogationPopFormPayload>;
+    /**
+     * 
+     * @type {NoValidInterrogationsFound}
+     * @memberof InterrogationPopPayload
+     */
+    'skipped'?: NoValidInterrogationsFound;
+}
+/**
+ * 
+ * @export
+ * @interface InterrogationStatus
+ */
+export interface InterrogationStatus {
+    /**
+     * The overall status of this interrogation
+     * @type {string}
+     * @memberof InterrogationStatus
+     */
+    'state'?: string;
+    /**
+     * 
+     * @type {Array<InterrogationFormStatus>}
+     * @memberof InterrogationStatus
+     */
+    'forms'?: Array<InterrogationFormStatus>;
 }
 /**
  * 
@@ -673,7 +877,8 @@ export const ModelGenerationInputStableSamplerNameEnum = {
 export type ModelGenerationInputStableSamplerNameEnum = typeof ModelGenerationInputStableSamplerNameEnum[keyof typeof ModelGenerationInputStableSamplerNameEnum];
 export const ModelGenerationInputStablePostProcessingEnum = {
     Gfpgan: 'GFPGAN',
-    RealEsrganX4plus: 'RealESRGAN_x4plus'
+    RealEsrganX4plus: 'RealESRGAN_x4plus',
+    CodeFormers: 'CodeFormers'
 } as const;
 
 export type ModelGenerationInputStablePostProcessingEnum = typeof ModelGenerationInputStablePostProcessingEnum[keyof typeof ModelGenerationInputStablePostProcessingEnum];
@@ -696,6 +901,66 @@ export interface ModelGenerationInputStableAllOf {
      * @memberof ModelGenerationInputStableAllOf
      */
     'n'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface ModelInterrogationFormPayloadStable
+ */
+export interface ModelInterrogationFormPayloadStable {
+    /**
+     * 
+     * @type {{ [key: string]: string; }}
+     * @memberof ModelInterrogationFormPayloadStable
+     */
+    '*'?: { [key: string]: string; };
+}
+/**
+ * 
+ * @export
+ * @interface ModelInterrogationFormStable
+ */
+export interface ModelInterrogationFormStable {
+    /**
+     * The type of interrogation this is
+     * @type {string}
+     * @memberof ModelInterrogationFormStable
+     */
+    'name': ModelInterrogationFormStableNameEnum;
+    /**
+     * 
+     * @type {ModelInterrogationFormPayloadStable}
+     * @memberof ModelInterrogationFormStable
+     */
+    'payload'?: ModelInterrogationFormPayloadStable;
+}
+
+export const ModelInterrogationFormStableNameEnum = {
+    Caption: 'caption',
+    Interrogation: 'interrogation',
+    Nsfw: 'nsfw'
+} as const;
+
+export type ModelInterrogationFormStableNameEnum = typeof ModelInterrogationFormStableNameEnum[keyof typeof ModelInterrogationFormStableNameEnum];
+
+/**
+ * 
+ * @export
+ * @interface ModelInterrogationInputStable
+ */
+export interface ModelInterrogationInputStable {
+    /**
+     * 
+     * @type {Array<ModelInterrogationFormStable>}
+     * @memberof ModelInterrogationInputStable
+     */
+    'forms'?: Array<ModelInterrogationFormStable>;
+    /**
+     * The public URL of the image to interrogate
+     * @type {string}
+     * @memberof ModelInterrogationInputStable
+     */
+    'source_image'?: string;
 }
 /**
  * 
@@ -782,7 +1047,8 @@ export const ModelPayloadRootStableSamplerNameEnum = {
 export type ModelPayloadRootStableSamplerNameEnum = typeof ModelPayloadRootStableSamplerNameEnum[keyof typeof ModelPayloadRootStableSamplerNameEnum];
 export const ModelPayloadRootStablePostProcessingEnum = {
     Gfpgan: 'GFPGAN',
-    RealEsrganX4plus: 'RealESRGAN_x4plus'
+    RealEsrganX4plus: 'RealESRGAN_x4plus',
+    CodeFormers: 'CodeFormers'
 } as const;
 
 export type ModelPayloadRootStablePostProcessingEnum = typeof ModelPayloadRootStablePostProcessingEnum[keyof typeof ModelPayloadRootStablePostProcessingEnum];
@@ -877,6 +1143,12 @@ export interface ModelPayloadStable {
      * @memberof ModelPayloadStable
      */
     'use_nsfw_censor'?: boolean;
+    /**
+     * When true will use embeddings from the concepts library when doing the generation
+     * @type {boolean}
+     * @memberof ModelPayloadStable
+     */
+    'use_embeds'?: boolean;
 }
 
 export const ModelPayloadStableSamplerNameEnum = {
@@ -896,7 +1168,8 @@ export const ModelPayloadStableSamplerNameEnum = {
 export type ModelPayloadStableSamplerNameEnum = typeof ModelPayloadStableSamplerNameEnum[keyof typeof ModelPayloadStableSamplerNameEnum];
 export const ModelPayloadStablePostProcessingEnum = {
     Gfpgan: 'GFPGAN',
-    RealEsrganX4plus: 'RealESRGAN_x4plus'
+    RealEsrganX4plus: 'RealESRGAN_x4plus',
+    CodeFormers: 'CodeFormers'
 } as const;
 
 export type ModelPayloadStablePostProcessingEnum = typeof ModelPayloadStablePostProcessingEnum[keyof typeof ModelPayloadStablePostProcessingEnum];
@@ -931,6 +1204,12 @@ export interface ModelPayloadStableAllOf {
      * @memberof ModelPayloadStableAllOf
      */
     'use_nsfw_censor'?: boolean;
+    /**
+     * When true will use embeddings from the concepts library when doing the generation
+     * @type {boolean}
+     * @memberof ModelPayloadStableAllOf
+     */
+    'use_embeds'?: boolean;
 }
 /**
  * 
@@ -1249,6 +1528,31 @@ export interface Newspiece {
 /**
  * 
  * @export
+ * @interface NoValidInterrogationsFound
+ */
+export interface NoValidInterrogationsFound {
+    /**
+     * How many waiting requests were skipped because they demanded a specific worker
+     * @type {number}
+     * @memberof NoValidInterrogationsFound
+     */
+    'worker_id'?: number;
+    /**
+     * How many waiting requests were skipped because they demanded a trusted worker which this worker is not.
+     * @type {number}
+     * @memberof NoValidInterrogationsFound
+     */
+    'untrusted'?: number;
+    /**
+     * How many waiting requests were skipped because they require a higher version of the bridge than this worker is running (upgrade if you see this in your skipped list).
+     * @type {number}
+     * @memberof NoValidInterrogationsFound
+     */
+    'bridge_version'?: number;
+}
+/**
+ * 
+ * @export
  * @interface NoValidRequestFound
  */
 export interface NoValidRequestFound {
@@ -1259,7 +1563,7 @@ export interface NoValidRequestFound {
      */
     'worker_id'?: number;
     /**
-     * How many waiting requests were skipped because they demanded a specific worker
+     * How many waiting requests were skipped because they required higher performance
      * @type {number}
      * @memberof NoValidRequestFound
      */
@@ -1308,7 +1612,7 @@ export interface NoValidRequestFoundStable {
      */
     'worker_id'?: number;
     /**
-     * How many waiting requests were skipped because they demanded a specific worker
+     * How many waiting requests were skipped because they required higher performance
      * @type {number}
      * @memberof NoValidRequestFoundStable
      */
@@ -1367,6 +1671,18 @@ export interface NoValidRequestFoundStable {
      * @memberof NoValidRequestFoundStable
      */
     'painting'?: number;
+    /**
+     * How many waiting requests were skipped because they requested post-processing
+     * @type {number}
+     * @memberof NoValidRequestFoundStable
+     */
+    'post-processing'?: number;
+    /**
+     * How many waiting requests were skipped because the user didn\'t have enough kudos when this worker requires upfront kudos
+     * @type {number}
+     * @memberof NoValidRequestFoundStable
+     */
+    'kudos'?: number;
 }
 /**
  * 
@@ -1398,6 +1714,18 @@ export interface NoValidRequestFoundStableAllOf {
      * @memberof NoValidRequestFoundStableAllOf
      */
     'painting'?: number;
+    /**
+     * How many waiting requests were skipped because they requested post-processing
+     * @type {number}
+     * @memberof NoValidRequestFoundStableAllOf
+     */
+    'post-processing'?: number;
+    /**
+     * How many waiting requests were skipped because the user didn\'t have enough kudos when this worker requires upfront kudos
+     * @type {number}
+     * @memberof NoValidRequestFoundStableAllOf
+     */
+    'kudos'?: number;
 }
 /**
  * 
@@ -1520,6 +1848,18 @@ export interface PopInputStable {
      * @memberof PopInputStable
      */
     'allow_unsafe_ipaddr'?: boolean;
+    /**
+     * If True, this worker will pick up requests requesting post-processing.
+     * @type {boolean}
+     * @memberof PopInputStable
+     */
+    'allow_post_processing'?: boolean;
+    /**
+     * If True, then will only pick up requests where the users has the required kudos for them already.
+     * @type {boolean}
+     * @memberof PopInputStable
+     */
+    'require_upfront_kudos'?: boolean;
 }
 /**
  * 
@@ -1551,6 +1891,37 @@ export interface PopInputStableAllOf {
      * @memberof PopInputStableAllOf
      */
     'allow_unsafe_ipaddr'?: boolean;
+    /**
+     * If True, this worker will pick up requests requesting post-processing.
+     * @type {boolean}
+     * @memberof PopInputStableAllOf
+     */
+    'allow_post_processing'?: boolean;
+    /**
+     * If True, then will only pick up requests where the users has the required kudos for them already.
+     * @type {boolean}
+     * @memberof PopInputStableAllOf
+     */
+    'require_upfront_kudos'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface PostInterrogateSubmitRequest
+ */
+export interface PostInterrogateSubmitRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof PostInterrogateSubmitRequest
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostInterrogateSubmitRequest
+     */
+    'result'?: string;
 }
 /**
  * 
@@ -1656,6 +2027,25 @@ export interface RequestError {
      * The error message for this status code.
      * @type {string}
      * @memberof RequestError
+     */
+    'message'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface RequestInterrogationResponse
+ */
+export interface RequestInterrogationResponse {
+    /**
+     * The UUID of the request. Use this to retrieve the request status in the future
+     * @type {string}
+     * @memberof RequestInterrogationResponse
+     */
+    'id'?: string;
+    /**
+     * Any extra information from the horde about this request
+     * @type {string}
+     * @memberof RequestInterrogationResponse
      */
     'message'?: string;
 }
@@ -2800,6 +3190,12 @@ export interface WorkerDetailsStable {
      * @memberof WorkerDetailsStable
      */
     'painting'?: boolean;
+    /**
+     * If True, this worker supports and allows post-processing requests.
+     * @type {boolean}
+     * @memberof WorkerDetailsStable
+     */
+    'post-processing'?: boolean;
 }
 /**
  * 
@@ -2831,6 +3227,12 @@ export interface WorkerDetailsStableAllOf {
      * @memberof WorkerDetailsStableAllOf
      */
     'painting'?: boolean;
+    /**
+     * If True, this worker supports and allows post-processing requests.
+     * @type {boolean}
+     * @memberof WorkerDetailsStableAllOf
+     */
+    'post-processing'?: boolean;
 }
 /**
  * 
@@ -2870,6 +3272,45 @@ export const V2ApiAxiosParamCreator = function (configuration?: Configuration) {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('deleteAsyncStatus', 'id', id)
             const localVarPath = `/v2/generate/status/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (xFields != null) {
+                localVarHeaderParameter['X-Fields'] = String(xFields);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This request will return all already interrogated image results.
+         * @summary Cancel an unfinished interrogation request
+         * @param {string} id 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteInterrogationStatus: async (id: string, xFields?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteInterrogationStatus', 'id', id)
+            const localVarPath = `/v2/interrogate/status/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3073,7 +3514,7 @@ export const V2ApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * This request will include all already generated images in base64 encoded .webp files. As such, you are requested to not retrieve this endpoint often. Instead use the /check/ endpoint first This endpoint is limited to 1 request per minute
+         * This request will include all already generated images in download URL or base64 encoded .webp files. As such, you are requested to not retrieve this endpoint often. Instead use the /check/ endpoint first This endpoint is limited to 10 request per minute
          * @summary Retrieve the full status of an Asynchronous generation request
          * @param {string} id 
          * @param {string} [xFields] An optional fields mask
@@ -3265,6 +3706,45 @@ export const V2ApiAxiosParamCreator = function (configuration?: Configuration) {
          */
         getHordeNews: async (xFields?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v2/status/news`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (xFields != null) {
+                localVarHeaderParameter['X-Fields'] = String(xFields);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This request will include all already generated images. As such, you are requested to not retrieve this endpoint often. Instead use the /check/ endpoint first
+         * @summary Retrieve the full status of an interrogation request
+         * @param {string} id 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInterrogationStatus: async (id: string, xFields?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getInterrogationStatus', 'id', id)
+            const localVarPath = `/v2/interrogate/status/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -3628,6 +4108,150 @@ export const V2ApiAxiosParamCreator = function (configuration?: Configuration) {
             // verify required parameter 'payload' is not null or undefined
             assertParamExists('postAsyncGenerate', 'payload', payload)
             const localVarPath = `/v2/generate/async`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (apikey != null) {
+                localVarHeaderParameter['apikey'] = String(apikey);
+            }
+
+            if (xFields != null) {
+                localVarHeaderParameter['X-Fields'] = String(xFields);
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(payload, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint will immediately return with the UUID of the request for interrogation. This endpoint will always be accepted, even if there are no workers available currently to fulfill this request.  Perhaps some will appear in the next 20 minutes. Asynchronous requests live for 20 minutes before being considered stale and being deleted.
+         * @summary Initiate an Asynchronous request to interrogate an image
+         * @param {string} apikey A User API key
+         * @param {ModelInterrogationInputStable} payload 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postInterrogate: async (apikey: string, payload: ModelInterrogationInputStable, xFields?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'apikey' is not null or undefined
+            assertParamExists('postInterrogate', 'apikey', apikey)
+            // verify required parameter 'payload' is not null or undefined
+            assertParamExists('postInterrogate', 'payload', payload)
+            const localVarPath = `/v2/interrogate/async`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (apikey != null) {
+                localVarHeaderParameter['apikey'] = String(apikey);
+            }
+
+            if (xFields != null) {
+                localVarHeaderParameter['X-Fields'] = String(xFields);
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(payload, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint is used by registered workers only
+         * @summary Check if there are interrogation requests queued for fulfillment
+         * @param {string} apikey The API Key corresponding to a registered user
+         * @param {InterrogationPopInput} payload 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postInterrogatePop: async (apikey: string, payload: InterrogationPopInput, xFields?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'apikey' is not null or undefined
+            assertParamExists('postInterrogatePop', 'apikey', apikey)
+            // verify required parameter 'payload' is not null or undefined
+            assertParamExists('postInterrogatePop', 'payload', payload)
+            const localVarPath = `/v2/interrogate/pop`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (apikey != null) {
+                localVarHeaderParameter['apikey'] = String(apikey);
+            }
+
+            if (xFields != null) {
+                localVarHeaderParameter['X-Fields'] = String(xFields);
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(payload, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint is used by registered workers only
+         * @summary Submit the results of an interrogated image
+         * @param {string} apikey The worker\&#39;s owner API key
+         * @param {PostInterrogateSubmitRequest} payload 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postInterrogateSubmit: async (apikey: string, payload: PostInterrogateSubmitRequest, xFields?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'apikey' is not null or undefined
+            assertParamExists('postInterrogateSubmit', 'apikey', apikey)
+            // verify required parameter 'payload' is not null or undefined
+            assertParamExists('postInterrogateSubmit', 'payload', payload)
+            const localVarPath = `/v2/interrogate/submit`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -4058,6 +4682,18 @@ export const V2ApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * This request will return all already interrogated image results.
+         * @summary Cancel an unfinished interrogation request
+         * @param {string} id 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteInterrogationStatus(id: string, xFields?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InterrogationStatus>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteInterrogationStatus(id, xFields, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Only usable by horde moderators
          * @summary Remove an IP from timeout
          * @param {string} apikey A mod API key
@@ -4109,7 +4745,7 @@ export const V2ApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This request will include all already generated images in base64 encoded .webp files. As such, you are requested to not retrieve this endpoint often. Instead use the /check/ endpoint first This endpoint is limited to 1 request per minute
+         * This request will include all already generated images in download URL or base64 encoded .webp files. As such, you are requested to not retrieve this endpoint often. Instead use the /check/ endpoint first This endpoint is limited to 10 request per minute
          * @summary Retrieve the full status of an Asynchronous generation request
          * @param {string} id 
          * @param {string} [xFields] An optional fields mask
@@ -4174,6 +4810,18 @@ export const V2ApiFp = function(configuration?: Configuration) {
          */
         async getHordeNews(xFields?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Newspiece>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getHordeNews(xFields, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * This request will include all already generated images. As such, you are requested to not retrieve this endpoint often. Instead use the /check/ endpoint first
+         * @summary Retrieve the full status of an interrogation request
+         * @param {string} id 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getInterrogationStatus(id: string, xFields?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InterrogationStatus>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getInterrogationStatus(id, xFields, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4284,6 +4932,45 @@ export const V2ApiFp = function(configuration?: Configuration) {
          */
         async postAsyncGenerate(apikey: string, payload: GenerationInput, xFields?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RequestAsync>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postAsyncGenerate(apikey, payload, xFields, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * This endpoint will immediately return with the UUID of the request for interrogation. This endpoint will always be accepted, even if there are no workers available currently to fulfill this request.  Perhaps some will appear in the next 20 minutes. Asynchronous requests live for 20 minutes before being considered stale and being deleted.
+         * @summary Initiate an Asynchronous request to interrogate an image
+         * @param {string} apikey A User API key
+         * @param {ModelInterrogationInputStable} payload 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async postInterrogate(apikey: string, payload: ModelInterrogationInputStable, xFields?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RequestInterrogationResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postInterrogate(apikey, payload, xFields, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * This endpoint is used by registered workers only
+         * @summary Check if there are interrogation requests queued for fulfillment
+         * @param {string} apikey The API Key corresponding to a registered user
+         * @param {InterrogationPopInput} payload 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async postInterrogatePop(apikey: string, payload: InterrogationPopInput, xFields?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InterrogationPopPayload>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postInterrogatePop(apikey, payload, xFields, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * This endpoint is used by registered workers only
+         * @summary Submit the results of an interrogated image
+         * @param {string} apikey The worker\&#39;s owner API key
+         * @param {PostInterrogateSubmitRequest} payload 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async postInterrogateSubmit(apikey: string, payload: PostInterrogateSubmitRequest, xFields?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GenerationSubmitted>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postInterrogateSubmit(apikey, payload, xFields, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4411,6 +5098,17 @@ export const V2ApiFactory = function (configuration?: Configuration, basePath?: 
             return localVarFp.deleteAsyncStatus(id, xFields, options).then((request) => request(axios, basePath));
         },
         /**
+         * This request will return all already interrogated image results.
+         * @summary Cancel an unfinished interrogation request
+         * @param {string} id 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteInterrogationStatus(id: string, xFields?: string, options?: any): AxiosPromise<InterrogationStatus> {
+            return localVarFp.deleteInterrogationStatus(id, xFields, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Only usable by horde moderators
          * @summary Remove an IP from timeout
          * @param {string} apikey A mod API key
@@ -4458,7 +5156,7 @@ export const V2ApiFactory = function (configuration?: Configuration, basePath?: 
             return localVarFp.getAsyncCheck(id, xFields, options).then((request) => request(axios, basePath));
         },
         /**
-         * This request will include all already generated images in base64 encoded .webp files. As such, you are requested to not retrieve this endpoint often. Instead use the /check/ endpoint first This endpoint is limited to 1 request per minute
+         * This request will include all already generated images in download URL or base64 encoded .webp files. As such, you are requested to not retrieve this endpoint often. Instead use the /check/ endpoint first This endpoint is limited to 10 request per minute
          * @summary Retrieve the full status of an Asynchronous generation request
          * @param {string} id 
          * @param {string} [xFields] An optional fields mask
@@ -4518,6 +5216,17 @@ export const V2ApiFactory = function (configuration?: Configuration, basePath?: 
          */
         getHordeNews(xFields?: string, options?: any): AxiosPromise<Array<Newspiece>> {
             return localVarFp.getHordeNews(xFields, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This request will include all already generated images. As such, you are requested to not retrieve this endpoint often. Instead use the /check/ endpoint first
+         * @summary Retrieve the full status of an interrogation request
+         * @param {string} id 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInterrogationStatus(id: string, xFields?: string, options?: any): AxiosPromise<InterrogationStatus> {
+            return localVarFp.getInterrogationStatus(id, xFields, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4619,6 +5328,42 @@ export const V2ApiFactory = function (configuration?: Configuration, basePath?: 
          */
         postAsyncGenerate(apikey: string, payload: GenerationInput, xFields?: string, options?: any): AxiosPromise<RequestAsync> {
             return localVarFp.postAsyncGenerate(apikey, payload, xFields, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint will immediately return with the UUID of the request for interrogation. This endpoint will always be accepted, even if there are no workers available currently to fulfill this request.  Perhaps some will appear in the next 20 minutes. Asynchronous requests live for 20 minutes before being considered stale and being deleted.
+         * @summary Initiate an Asynchronous request to interrogate an image
+         * @param {string} apikey A User API key
+         * @param {ModelInterrogationInputStable} payload 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postInterrogate(apikey: string, payload: ModelInterrogationInputStable, xFields?: string, options?: any): AxiosPromise<RequestInterrogationResponse> {
+            return localVarFp.postInterrogate(apikey, payload, xFields, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint is used by registered workers only
+         * @summary Check if there are interrogation requests queued for fulfillment
+         * @param {string} apikey The API Key corresponding to a registered user
+         * @param {InterrogationPopInput} payload 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postInterrogatePop(apikey: string, payload: InterrogationPopInput, xFields?: string, options?: any): AxiosPromise<InterrogationPopPayload> {
+            return localVarFp.postInterrogatePop(apikey, payload, xFields, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint is used by registered workers only
+         * @summary Submit the results of an interrogated image
+         * @param {string} apikey The worker\&#39;s owner API key
+         * @param {PostInterrogateSubmitRequest} payload 
+         * @param {string} [xFields] An optional fields mask
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postInterrogateSubmit(apikey: string, payload: PostInterrogateSubmitRequest, xFields?: string, options?: any): AxiosPromise<GenerationSubmitted> {
+            return localVarFp.postInterrogateSubmit(apikey, payload, xFields, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint is used by registered workers only
@@ -4739,6 +5484,19 @@ export class V2Api extends BaseAPI {
     }
 
     /**
+     * This request will return all already interrogated image results.
+     * @summary Cancel an unfinished interrogation request
+     * @param {string} id 
+     * @param {string} [xFields] An optional fields mask
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof V2Api
+     */
+    public deleteInterrogationStatus(id: string, xFields?: string, options?: AxiosRequestConfig) {
+        return V2ApiFp(this.configuration).deleteInterrogationStatus(id, xFields, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * Only usable by horde moderators
      * @summary Remove an IP from timeout
      * @param {string} apikey A mod API key
@@ -4794,7 +5552,7 @@ export class V2Api extends BaseAPI {
     }
 
     /**
-     * This request will include all already generated images in base64 encoded .webp files. As such, you are requested to not retrieve this endpoint often. Instead use the /check/ endpoint first This endpoint is limited to 1 request per minute
+     * This request will include all already generated images in download URL or base64 encoded .webp files. As such, you are requested to not retrieve this endpoint often. Instead use the /check/ endpoint first This endpoint is limited to 10 request per minute
      * @summary Retrieve the full status of an Asynchronous generation request
      * @param {string} id 
      * @param {string} [xFields] An optional fields mask
@@ -4865,6 +5623,19 @@ export class V2Api extends BaseAPI {
      */
     public getHordeNews(xFields?: string, options?: AxiosRequestConfig) {
         return V2ApiFp(this.configuration).getHordeNews(xFields, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This request will include all already generated images. As such, you are requested to not retrieve this endpoint often. Instead use the /check/ endpoint first
+     * @summary Retrieve the full status of an interrogation request
+     * @param {string} id 
+     * @param {string} [xFields] An optional fields mask
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof V2Api
+     */
+    public getInterrogationStatus(id: string, xFields?: string, options?: AxiosRequestConfig) {
+        return V2ApiFp(this.configuration).getInterrogationStatus(id, xFields, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4984,6 +5755,48 @@ export class V2Api extends BaseAPI {
      */
     public postAsyncGenerate(apikey: string, payload: GenerationInput, xFields?: string, options?: AxiosRequestConfig) {
         return V2ApiFp(this.configuration).postAsyncGenerate(apikey, payload, xFields, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint will immediately return with the UUID of the request for interrogation. This endpoint will always be accepted, even if there are no workers available currently to fulfill this request.  Perhaps some will appear in the next 20 minutes. Asynchronous requests live for 20 minutes before being considered stale and being deleted.
+     * @summary Initiate an Asynchronous request to interrogate an image
+     * @param {string} apikey A User API key
+     * @param {ModelInterrogationInputStable} payload 
+     * @param {string} [xFields] An optional fields mask
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof V2Api
+     */
+    public postInterrogate(apikey: string, payload: ModelInterrogationInputStable, xFields?: string, options?: AxiosRequestConfig) {
+        return V2ApiFp(this.configuration).postInterrogate(apikey, payload, xFields, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint is used by registered workers only
+     * @summary Check if there are interrogation requests queued for fulfillment
+     * @param {string} apikey The API Key corresponding to a registered user
+     * @param {InterrogationPopInput} payload 
+     * @param {string} [xFields] An optional fields mask
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof V2Api
+     */
+    public postInterrogatePop(apikey: string, payload: InterrogationPopInput, xFields?: string, options?: AxiosRequestConfig) {
+        return V2ApiFp(this.configuration).postInterrogatePop(apikey, payload, xFields, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint is used by registered workers only
+     * @summary Submit the results of an interrogated image
+     * @param {string} apikey The worker\&#39;s owner API key
+     * @param {PostInterrogateSubmitRequest} payload 
+     * @param {string} [xFields] An optional fields mask
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof V2Api
+     */
+    public postInterrogateSubmit(apikey: string, payload: PostInterrogateSubmitRequest, xFields?: string, options?: AxiosRequestConfig) {
+        return V2ApiFp(this.configuration).postInterrogateSubmit(apikey, payload, xFields, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
